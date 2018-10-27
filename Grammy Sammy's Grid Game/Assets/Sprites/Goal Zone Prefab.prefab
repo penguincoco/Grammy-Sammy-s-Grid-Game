@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4430037416158160}
   - component: {fileID: 114231640023718862}
   - component: {fileID: 61265769898246916}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Goal Zone Prefab
   m_TagString: Goal
   m_Icon: {fileID: 0}

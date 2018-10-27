@@ -21,12 +21,13 @@ GameObject:
   - component: {fileID: 4876650656896978}
   - component: {fileID: 114702899960053370}
   - component: {fileID: 50552436426666490}
-  - component: {fileID: 61721170946991594}
   - component: {fileID: 114583058186800592}
   - component: {fileID: 58419985470752666}
   - component: {fileID: 68282080935902360}
   - component: {fileID: 212161038369315856}
   - component: {fileID: 60221889818049244}
+  - component: {fileID: 61956805539830012}
+  - component: {fileID: 61864115848449496}
   m_Layer: 0
   m_Name: Player Prefab
   m_TagString: Untagged
@@ -41,7 +42,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1352326765261372}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.63, y: 7.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,7 +89,7 @@ PolygonCollider2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1352326765261372}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -149,7 +150,7 @@ PolygonCollider2D:
       - {x: -0.51, y: -1.8}
       - {x: -0.71999997, y: -1.1899999}
       - {x: -0.25, y: -1.1999999}
---- !u!61 &61721170946991594
+--- !u!61 &61864115848449496
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,7 +173,32 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4, y: 4}
+  m_EdgeRadius: 0
+--- !u!61 &61956805539830012
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1352326765261372}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 4}
+    newSize: {x: 4, y: 4}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.7747993, y: 3.8873997}
   m_EdgeRadius: 0
 --- !u!68 &68282080935902360
 EdgeCollider2D:
