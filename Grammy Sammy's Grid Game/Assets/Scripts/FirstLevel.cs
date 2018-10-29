@@ -32,11 +32,17 @@ public class FirstLevel : MonoBehaviour {
 	public string[,] levelMap; //rows first, then inner array is column
 
 	private GameObject[] goalZones;
-	private int numberOfGoalZones; 
+	private int numberOfGoalZones;
+
+	private float timeToChange;
+
+	private int goalsInPlace;
 	
 	// Use this for initialization
 	void Start ()
 	{
+		goalsInPlace = 0;
+		timeToChange = 5f;
 		row = 9;
 		col = 9;
 		numberOfGoalZones = 0;
@@ -58,10 +64,10 @@ public class FirstLevel : MonoBehaviour {
 			{" ", " ", " ", " ", "#", "#", "#", "#", "#"},
 			//{" ", "#", " ", "0", "0", "0", "#", " ", " "},
 			{"#", "#", "#", "#", "#", " ", " ", " ", "#"},
-			{"#", " ", " ", "#", "#", " ", "p", " ", "#"},
-			{"#", " ", " ", " ", " ", " ", "b", " ", "#"},
-			{"#", " ", " ", " ", "#", "#", "#", "#", "#"},
-			{"#", "#", "#", " ", "#", " ", " ", " ", " "},
+			{"#", " ", " ", "#", "#", " ", "p", " ", "#"}, //player goes in this row, third from the right
+			{"#", " ", " ", " ", " ", " ", " ", " ", "#"},
+			{"#", " ", " ", "b", "#", "#", "#", "#", "#"},
+			{"#", "#", " ", " ", "#", " ", " ", " ", " "},
 			{" ", "#", " ", " ", "#", "#", "#", " ", " "},
 			//{" ", "p", "b", "b", "0", "0", "#", " ", " "},
 			{" ", "#", " ", "0", "0", "0", "#", " ", " "},
@@ -111,15 +117,21 @@ public class FirstLevel : MonoBehaviour {
 
 	void MapCompleted()
 	{
-		//Debug.Log("Running mapcompleted method");
-		//Debug.Log(goalZones.Length);
+		//check to see if any goals have an object in them.
 		foreach (GameObject goalZone in goalZones)
 		{
 			if (goalZone.GetComponent<GoalZone>().GetGoalStatus())
 			{
-				Debug.Log("All goals in place");
-				SceneManager.LoadScene("MainMenu");
+				goalsInPlace++;
 			}
+		}
+
+		//if all three goals are filled, game over. 		
+		if (goalsInPlace == 3)
+		{
+			timeToChange -= Time.deltaTime;
+			Debug.Log("All goals in place");
+			SceneManager.LoadScene("MainMenu");
 		}
 	}
 }

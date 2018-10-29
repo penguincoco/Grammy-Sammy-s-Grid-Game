@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -6,20 +7,11 @@ using UnityEngine;
 public class NewPlayerController : MonoBehaviour
 {
 
-	public enum direction
-	{
-		RIGHT,
-		LEFT,
-		UP,
-		DOWN
-	};
-
 	private bool canMove;
 	private bool isMoving;
 	private int speed = 5;
 	private Vector3 towardsPos;
 	private Vector3 towardsPosCheck;
-	private direction orientation;
 
 	//private int walls;
 
@@ -27,28 +19,29 @@ public class NewPlayerController : MonoBehaviour
 	private bool isNear;
 	private GameObject[] walls;
 	private GameObject[] boxes;
+	[HideInInspector]public String direction;
 
 
 	// Use this for initialization
 	void Start()
 	{
-		//walls = 8;
+		direction = "right";
 		canMove = true;
 		isMoving = false;
 		speed = 5;
 		walls = GameObject.FindGameObjectsWithTag("Wall");
 		boxes = GameObject.FindGameObjectsWithTag("Box");
-		orientation = direction.RIGHT;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		Debug.Log(Vector3.left);
 		if (canMove && !isMoving)
 		{
 			towardsPos = transform.position;
 			towardsPosCheck = transform.position;
-			move();
+			Move();
 		}
 
 		if (isMoving)
@@ -58,39 +51,39 @@ public class NewPlayerController : MonoBehaviour
 			{
 				isMoving = false;
 				canMove = true;
-				//move();
+				//Move();
 			}
 
 			transform.position = Vector3.MoveTowards(transform.position, towardsPos, Time.deltaTime * speed);
 		}
 	}
 
-	private void move()
+	private void Move()
 	{
 		if (Input.GetKey(KeyCode.UpArrow) && !Blocked(towardsPosCheck += Vector3.up))
 		{
-			orientation = direction.UP;
+			direction = "up";
 			canMove = false;
 			isMoving = true;
 			towardsPos += Vector3.up;
 		}
 		else if (Input.GetKey(KeyCode.DownArrow) && !Blocked(towardsPosCheck += Vector3.down))
 		{
-			orientation = direction.DOWN;
+			direction = "down";
 			canMove = false;
 			isMoving = true;
 			towardsPos += Vector3.down;
 		}
 		else if (Input.GetKey(KeyCode.RightArrow) && !Blocked(towardsPosCheck += Vector3.right))
 		{
-			orientation = direction.RIGHT;
+			direction = "right";
 			canMove = false;
 			isMoving = true;
 			towardsPos += Vector3.right;
 		}
 		else if (Input.GetKey(KeyCode.LeftArrow) && !Blocked(towardsPosCheck += Vector3.left))
 		{
-			orientation = direction.LEFT;
+			direction = "left"; 
 			canMove = false;
 			isMoving = true;
 			towardsPos += Vector3.left;
@@ -101,85 +94,38 @@ public class NewPlayerController : MonoBehaviour
 	{
 		foreach (GameObject wall in walls)
 		{
-			if (wall.transform.position == towardsPosCheck)
+			if (towardsPosCheck.x <= (wall.transform.position.x + 0.5f) &&
+			    towardsPosCheck.x >= (wall.transform.position.x - 0.5f) &&
+			    towardsPosCheck.y >= (wall.transform.position.y - 0.5f) &&
+			    towardsPosCheck.y <= (wall.transform.position.y + 0.5f)
+			    )
+			//if (wall.transform.position == towardsPosCheck)
 			{
 				Debug.Log("there is a wall so therefore i cannot move");
 				return true;
 			}
 		}
+		return false;  
+	}
 
-		//return false;
-
-//		foreach (GameObject box in boxes)
+//	private void OnTriggerEnter2D(Collider2D otherObj)
+//	{
+//		if (otherObj.gameObject.CompareTag("Box"))
 //		{
-//			if (box.GetComponent<Box>().BoxBlocked())
+//			
+//		}
+//	}
+}
+
+//		
+//		foreach (GameObject wall in walls)
+//		{
+//			if (wall.transform.position == towardsPosCheck)
 //			{
-//				Debug.Log("there is a box behind the box so I cannot push it");
+//				Debug.Log("there is a wall so therefore i cannot move");
 //				return true;
 //			}
 //		}
-		return false;
-	}
-
-	private void OnTriggerEnter2D(Collider2D otherObj)
-	{
-		if (otherObj.gameObject.CompareTag("Box"))
-		{
-			otherObj.GetComponent<Box>().MoveBox();
-		}
-	}
-}
-
-//	bool Blocked(Vector3 towardsPosCheck)
-//	{
-//		Vector2 positionCheck = new Vector2(towardsPosCheck.x, towardsPosCheck.y);
 //
-//		Collider2D overlap = Physics2D.OverlapPoint(positionCheck, walls, 0, 0);
-//		Debug.Log(overlap);
-//		
-//		if (overlap != null)
-//		{
-//			Debug.Log(overlap);
-//			return true; 
-//		}
-//		
 //		return false;
 //	}
-//}
-
-
-
-
-//	void checkInFront()
-//	{
-//		if (orientation == direction.LEFT)
-//		{
-//			Collider2D wall = Physics2D.OverlapArea(
-//				new Vector2(transform.position.x + 1, transform.position.y + 0.5f),
-//				new Vector2(transform.position.x + 1, transform.position.y - 0.5f));
-//
-//			if (wall != null)
-//			{
-//				canMove = false;
-//			}
-//		}
-//
-//		
-//	}
-
-//		if (otherObj.CompareTag("Wall"))
-//		{
-//			Debug.Log("hit a wall, can't move!");
-//			canMove = false; 
-//		}
-//	}
-//}
-
-//		Vector3 dir = (this.transform.position - transform.position).normalized;
-//		float dot = Vector3.Dot(dir, transform.forward);
-
-//	void caster(Vector2 center, float radius)
-//	{
-//		Collider2D[] walls = Physics2D.OverlapAreaAll();
-//	}
-//}
