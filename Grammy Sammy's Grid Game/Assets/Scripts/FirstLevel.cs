@@ -62,14 +62,12 @@ public class FirstLevel : MonoBehaviour {
 		
 		{
 			{" ", " ", " ", " ", "#", "#", "#", "#", "#"},
-			//{" ", "#", " ", "0", "0", "0", "#", " ", " "},
-			{"#", "#", "#", "#", "#", " ", " ", " ", "#"},
-			{"#", " ", " ", "#", "#", " ", "p", " ", "#"}, //player goes in this row, third from the right
-			{"#", " ", " ", " ", " ", " ", " ", " ", "#"},
-			{"#", " ", " ", "b", "#", "#", "#", "#", "#"},
-			{"#", "#", " ", " ", "#", " ", " ", " ", " "},
+			{"#", "#", "#", "#", "#", " ", " ", "p", "#"},
+			{"#", " ", " ", "#", "#", "b", "b", " ", "#"},
+			{"#", " ", " ", " ", " ", " ", "b", " ", "#"},
+			{"#", " ", " ", " ", "#", "#", "#", "#", "#"},
+			{"#", "#", "#", " ", "#", " ", " ", " ", " "},
 			{" ", "#", " ", " ", "#", "#", "#", " ", " "},
-			//{" ", "p", "b", "b", "0", "0", "#", " ", " "},
 			{" ", "#", " ", "0", "0", "0", "#", " ", " "},
 			{" ", "#", "#", "#", "#", "#", "#", " ", " "}
 		}; 
@@ -102,6 +100,7 @@ public class FirstLevel : MonoBehaviour {
 		}
 
 		goalZones = GameObject.FindGameObjectsWithTag("Goal");
+		Debug.Log(goalZones.Length);
 	}
 	
 	// Update is called once per frame
@@ -117,15 +116,19 @@ public class FirstLevel : MonoBehaviour {
 
 	void MapCompleted()
 	{
+		Debug.Log("Running Map Completed");
 		//check to see if any goals have an object in them.
 		foreach (GameObject goalZone in goalZones)
 		{
+			Debug.Log("checking the goals");
 			if (goalZone.GetComponent<GoalZone>().GetGoalStatus())
 			{
+				Debug.Log(goalsInPlace);
 				goalsInPlace++;
 			}
 		}
 
+		//Debug.Log(goalsInPlace);
 		//if all three goals are filled, game over. 		
 		if (goalsInPlace == 3)
 		{

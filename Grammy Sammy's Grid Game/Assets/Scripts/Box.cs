@@ -16,16 +16,21 @@ public class Box : MonoBehaviour
     private bool canBePushed;
     private bool isBeingPushed;
 
+    [HideInInspector]public bool isBlocked;
+
     private GameObject[] walls;
+    private GameObject[] boxes;
     
     void Start()
     {
+        isBlocked = false;
         canBePushed = false;
         isBeingPushed = false;
         currentPos = transform.position;
         playerDirection = "";
         speed = 5;
         walls = GameObject.FindGameObjectsWithTag("Wall");
+        boxes = GameObject.FindGameObjectsWithTag("Box");
     }
 
     void Update()
@@ -39,7 +44,7 @@ public class Box : MonoBehaviour
 
         if (isBeingPushed)
         {
-            Debug.Log("box is mid movement");
+            //Debug.Log("box is mid movement");
             transform.position = Vector3.MoveTowards(transform.position, moveTowards, Time.deltaTime * speed);
             //if the player has reached the next grid spot, they can move again
             if (transform.position == moveTowards)
@@ -47,13 +52,14 @@ public class Box : MonoBehaviour
                 Debug.Log("You have arrived at your destination");
                 isBeingPushed = false;
                 canBePushed = true;
+                
             }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D otherObj)
     {
-        Debug.Log("Player has collided with me, ya boi, a box");
+        //Debug.Log("Player has collided with me, ya boi, a box");
         if (otherObj.gameObject.CompareTag("Player"))
         {
             playerScript = otherObj.gameObject.GetComponent<NewPlayerController>();
@@ -82,15 +88,15 @@ public class Box : MonoBehaviour
             moveTowards += Vector3.down;
         }
 
-        Debug.Log("Move being run");
+        //Debug.Log("Move being run");
         canBePushed = false;
         isBeingPushed = true;
-        Debug.Log("Is being pushed status: " + isBeingPushed);
-        Debug.Log("Can be pushed status: " + canBePushed);
+//        Debug.Log("Is being pushed status: " + isBeingPushed);
+//        Debug.Log("Can be pushed status: " + canBePushed);
         //transform.position = Vector3.MoveTowards(transform.position, moveTowards, Time.deltaTime * speed);
     }
 
-    bool BoxBlocked(Vector3 moveTowardsCheck)
+    public bool BoxBlocked(Vector3 moveTowardsCheck)
     {
         foreach (GameObject wall in walls)
         {
@@ -101,13 +107,26 @@ public class Box : MonoBehaviour
                 )
                 //if (wall.transform.position == towardsPosCheck)
             {
-                Debug.Log("there is a wall so therefore i, ya boxy boi, cannot move");
+                //Debug.Log("there is a wall so therefore i, ya boxy boi, cannot move");
+                isBlocked = true;  
+                return true;
+            }
+        }
+        
+        foreach (GameObject box in boxes)
+        {
+            if (moveTowardsCheck.x <= (box.transform.position.x + 0.5f) &&
+                moveTowardsCheck.x >= (box.transform.position.x - 0.5f) &&
+                moveTowardsCheck.y >= (box.transform.position.y - 0.5f) &&
+                moveTowardsCheck.y <= (box.transform.position.y + 0.5f)
+                )
+                //if (wall.transform.position == towardsPosCheck)
+            {
+                //Debug.Log("there is a wall so therefore i, ya boxy boi, cannot move");
+                isBlocked = true;  
                 return true;
             }
         }
         return false;  
     }
 }
-
-
-

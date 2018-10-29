@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GoalZone : MonoBehaviour
 {
-
 	private bool boxInGoal;
 	
 	// Use this for initialization
@@ -22,6 +21,7 @@ public class GoalZone : MonoBehaviour
 	{
 		if (otherObj.CompareTag("Box"))
 		{
+			Debug.Log("There is a box in the goal!");
 			Debug.Log(boxInGoal);
 			boxInGoal = true;
 		}
