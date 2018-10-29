@@ -8,7 +8,6 @@ public class Box : MonoBehaviour
 
     private NewPlayerController playerScript;
     private String playerDirection;
-    private Vector3 currentPos;
     private Vector3 moveTowards;
     private Vector3 moveTowardsCheck;
     private int speed;
@@ -20,23 +19,31 @@ public class Box : MonoBehaviour
 
     private GameObject[] walls;
     private GameObject[] boxes;
-    private GameObject[] goalZones;
+//    private GameObject[] goalZones;
 
-    private GoalZone goalScript;
-    private FirstLevel levelScript;
-    private int inGoals;
+//    private GoalZone goalScript;
+//    private GameObject mainCamera;
+//    private FirstLevel levelScript;
+//    private int inGoals;
+//    private GameObject goalOne;
+//    private GameObject goalTwo;
+//    private GameObject goalThree;
+    
     
     void Start()
     {
         isBlocked = false;
         canBePushed = false;
         isBeingPushed = false;
-        currentPos = transform.position;
+       // currentPos = transform.position;
         playerDirection = "";
         speed = 5;
         walls = GameObject.FindGameObjectsWithTag("Wall");
         boxes = GameObject.FindGameObjectsWithTag("Box");
-        goalZones = GameObject.FindGameObjectsWithTag("Goal");
+       // goalZones = GameObject.FindGameObjectsWithTag("Goal");
+
+//        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+//        levelScript = mainCamera.GetComponent<FirstLevel>();
     }
 
     void Update()
@@ -55,26 +62,12 @@ public class Box : MonoBehaviour
             //if the player has reached the next grid spot, they can move again
             if (transform.position == moveTowards)
             {
-                Debug.Log("You have arrived at your destination");
+//                Debug.Log("You have arrived at your destination");
                 isBeingPushed = false;
                 canBePushed = true;
                 
             }
-        }
-
-        foreach (GameObject goal in goalZones)
-        {
-            goalScript = goal.gameObject.GetComponent<GoalZone>();
-            
-            if (transform.position.x <= (goal.transform.position.x + 0.5f) &&
-                transform.position.x >= (goal.transform.position.x - 0.5f) &&
-                transform.position.y >= (goal.transform.position.y - 0.5f) &&
-                transform.position.y <= (goal.transform.position.y + 0.5f)
-            )
-            {
-                
-            }
-        }
+        }       
     }
 
     private void OnTriggerEnter2D(Collider2D otherObj)
@@ -108,12 +101,8 @@ public class Box : MonoBehaviour
             moveTowards += Vector3.down;
         }
 
-        //Debug.Log("Move being run");
         canBePushed = false;
         isBeingPushed = true;
-//        Debug.Log("Is being pushed status: " + isBeingPushed);
-//        Debug.Log("Can be pushed status: " + canBePushed);
-        //transform.position = Vector3.MoveTowards(transform.position, moveTowards, Time.deltaTime * speed);
     }
 
     public bool BoxBlocked(Vector3 moveTowardsCheck)

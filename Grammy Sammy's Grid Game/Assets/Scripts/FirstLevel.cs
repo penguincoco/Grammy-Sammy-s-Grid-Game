@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FirstLevel : MonoBehaviour {
+public class FirstLevel : MonoBehaviour
+{
 
 	//This is what will display level 1
 	//map a 2D matrix
@@ -33,33 +34,37 @@ public class FirstLevel : MonoBehaviour {
 
 	private GameObject[] goalZones;
 	private int numberOfGoalZones;
+	private GameObject goalOne;
+	private GameObject goalTwo;
+	private GameObject goalThree;
+
+	private GameObject[] boxes;
+	private GameObject boxOne;
+	private GameObject boxTwo;
+	private GameObject boxThree;
+
 
 	private float timeToChange;
 
-	private int goalsInPlace;
-	
+	private bool goalOneIn;
+	private bool goalTwoIn;
+	private bool goalThreeIn;
+
+	[HideInInspector] public int goalsInPlace;
+
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
 		goalsInPlace = 0;
+		goalOneIn = false;
+		goalTwoIn = false;
+		goalThreeIn = false;
 		timeToChange = 5f;
 		row = 9;
 		col = 9;
 		numberOfGoalZones = 0;
-		
+
 		levelMap = new string[,]
-//		{
-//			{"#", "#", "#", "#", "#", " ", " ", " ", " "},
-//			{"#", " ", " ", " ", "#", " ", " ", " ", " "},
-//			{"#", " ", "p", " ", "#", " ", "#", "#", "#"},
-//			{"#", " ", " ", " ", "#", " ", "#", "0", "#"},
-//			{"#", "#", "#", " ", "#", "#", "#", "0", "#"},
-//			{" ", "#", "#", " ", " ", " ", " ", "0", "#"},
-//			{" ", "#", " ", " ", " ", "#", " ", " ", "#"},
-//			{" ", "#", " ", " ", " ", "#", "#", "#", "#"},
-//			{" ", "#", "#", "#", "#", "#", " ", " ", "#"},
-//		};
-		
 		{
 			{" ", " ", " ", " ", "#", "#", "#", "#", "#"},
 			{"#", "#", "#", "#", "#", " ", " ", "p", "#"},
@@ -70,13 +75,13 @@ public class FirstLevel : MonoBehaviour {
 			{" ", "#", " ", " ", "#", "#", "#", " ", " "},
 			{" ", "#", " ", "0", "0", "0", "#", " ", " "},
 			{" ", "#", "#", "#", "#", "#", "#", " ", " "}
-		}; 
-		
+		};
+
 
 		for (int i = 0; i < row; i++)
 		{
 			//Debug.Log("i = " + i);
-			
+
 			for (int j = 0; j < col; j++)
 			{
 				//Debug.Log(levelMap[i, j]);
@@ -100,15 +105,24 @@ public class FirstLevel : MonoBehaviour {
 		}
 
 		goalZones = GameObject.FindGameObjectsWithTag("Goal");
-		Debug.Log(goalZones.Length);
+		//Debug.Log(goalZones.Length);
+
+		timeToChange = 5f;
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 		if (Input.GetKey(KeyCode.Alpha1))
 		{
-			Debug.Log("Restarting the level");
+			//Debug.Log("Restarting the level");
 			SceneManager.LoadScene("Level1");
+		}
+
+		if (Input.GetKey(KeyCode.Alpha0))
+		{
+			//Debug.Log("Restarting the level");
+			SceneManager.LoadScene("MainMenu");
 		}
 
 		MapCompleted();
@@ -116,25 +130,21 @@ public class FirstLevel : MonoBehaviour {
 
 	void MapCompleted()
 	{
-		Debug.Log("Running Map Completed");
-		//check to see if any goals have an object in them.
-		foreach (GameObject goalZone in goalZones)
+		if (goalsInPlace == 6)
 		{
-			Debug.Log("checking the goals");
-			if (goalZone.GetComponent<GoalZone>().GetGoalStatus())
+			Debug.Log("All goals in place");
+			timeToChange -= Time.deltaTime;
+			if (timeToChange <= 0)
 			{
-				Debug.Log(goalsInPlace);
-				goalsInPlace++;
+				SceneManager.LoadScene("MainMenu");
 			}
 		}
+	}
 
-		//Debug.Log(goalsInPlace);
-		//if all three goals are filled, game over. 		
-		if (goalsInPlace == 3)
-		{
-			timeToChange -= Time.deltaTime;
-			Debug.Log("All goals in place");
-			SceneManager.LoadScene("MainMenu");
-		}
+	public void test()
+	{
+		Debug.Log("Accessing level script from box script!");
 	}
 }
+
+

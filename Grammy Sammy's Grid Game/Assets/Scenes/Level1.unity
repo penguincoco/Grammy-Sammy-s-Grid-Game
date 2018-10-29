@@ -404,6 +404,7 @@ MonoBehaviour:
   blankSpot: {fileID: 0}
   row: 10
   col: 10
+  goalsInPlace: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -422,7 +423,7 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.75
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -521,11 +522,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4430037416158160, guid: c735b6fcafe46498abb69ab949c20dfe, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 14.116339
+      value: 14.5
       objectReference: {fileID: 0}
     - target: {fileID: 4430037416158160, guid: c735b6fcafe46498abb69ab949c20dfe, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -1.6984885
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4430037416158160, guid: c735b6fcafe46498abb69ab949c20dfe, type: 2}
       propertyPath: m_LocalPosition.z

@@ -4,32 +4,40 @@ using UnityEngine;
 
 public class GoalZone : MonoBehaviour
 {
-	private bool boxInGoal;
+	[HideInInspector]public bool boxInGoal;
+	private GameObject mainCamera;
+	private FirstLevel levelScript;
 	
 	// Use this for initialization
 	void Start ()
 	{
 		boxInGoal = false;
+		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+		levelScript = mainCamera.GetComponent<FirstLevel>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log(boxInGoal);
+//		levelScript.goalsInPlace = -1;
+//		Debug.Log(levelScript.goalsInPlace);
 	}
+
 
 	void OnTriggerEnter2D(Collider2D otherObj)
 	{
-		Debug.Log("Something has entered goal's trigger zone");
 		if (otherObj.gameObject.CompareTag("Box"))
 		{
+			Debug.Log("Box has entered trigger zone!");
 			Debug.Log("There is a box in the goal!");
-			Debug.Log(boxInGoal);
 			boxInGoal = true;
-		}
+			levelScript.goalsInPlace++;
+			Debug.Log(levelScript.goalsInPlace);
+		} 
 	}
 
-	public bool GetGoalStatus()
-	{
-		return boxInGoal; 
-	}
+//	private void OnTriggerExit2D(Collider2D otherObj)
+//	{
+//		levelScript.goalsInPlace--;
+//		Debug.Log(levelScript.goalsInPlace);
+//	}
 }
