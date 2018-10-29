@@ -14,12 +14,13 @@ public class GoalZone : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-		
+		Debug.Log(boxInGoal);
 	}
 
-	private void OnTriggerEnter2D(Collider2D otherObj)
+	void OnTriggerEnter2D(Collider2D otherObj)
 	{
-		if (otherObj.CompareTag("Box"))
+		Debug.Log("Something has entered goal's trigger zone");
+		if (otherObj.gameObject.CompareTag("Box"))
 		{
 			Debug.Log("There is a box in the goal!");
 			Debug.Log(boxInGoal);

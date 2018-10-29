@@ -555,10 +555,6 @@ Prefab:
       propertyPath: m_Name
       value: Goal Zone
       objectReference: {fileID: 0}
-    - target: {fileID: 1395600366716618, guid: c735b6fcafe46498abb69ab949c20dfe, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c735b6fcafe46498abb69ab949c20dfe, type: 2}
   m_IsPrefabAsset: 0

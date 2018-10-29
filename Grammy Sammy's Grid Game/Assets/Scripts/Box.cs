@@ -20,6 +20,11 @@ public class Box : MonoBehaviour
 
     private GameObject[] walls;
     private GameObject[] boxes;
+    private GameObject[] goalZones;
+
+    private GoalZone goalScript;
+    private FirstLevel levelScript;
+    private int inGoals;
     
     void Start()
     {
@@ -31,6 +36,7 @@ public class Box : MonoBehaviour
         speed = 5;
         walls = GameObject.FindGameObjectsWithTag("Wall");
         boxes = GameObject.FindGameObjectsWithTag("Box");
+        goalZones = GameObject.FindGameObjectsWithTag("Goal");
     }
 
     void Update()
@@ -52,6 +58,20 @@ public class Box : MonoBehaviour
                 Debug.Log("You have arrived at your destination");
                 isBeingPushed = false;
                 canBePushed = true;
+                
+            }
+        }
+
+        foreach (GameObject goal in goalZones)
+        {
+            goalScript = goal.gameObject.GetComponent<GoalZone>();
+            
+            if (transform.position.x <= (goal.transform.position.x + 0.5f) &&
+                transform.position.x >= (goal.transform.position.x - 0.5f) &&
+                transform.position.y >= (goal.transform.position.y - 0.5f) &&
+                transform.position.y <= (goal.transform.position.y + 0.5f)
+            )
+            {
                 
             }
         }
