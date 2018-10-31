@@ -6,13 +6,14 @@ using UnityEngine;
 
 public class NewPlayerController : MonoBehaviour
 {
-
-	private bool canMove;
-	private bool isMoving;
+	//player characteristics: their ability to move, if they are moving, speed, where they're trying to go, step count
+	public bool canMove;
+	public bool isMoving;
 	private int speed = 5;
 	private Vector3 towardsPos;
 	private Vector3 towardsPosCheck;
-
+	[HideInInspector]public int steps;
+	
 	//private int walls;
 
 	//check to see if the player is next to a wall, if it is, then do NOT run moveTowards 
@@ -20,13 +21,16 @@ public class NewPlayerController : MonoBehaviour
 	private GameObject[] walls;
 	private GameObject[] boxes;
 	[HideInInspector]public String direction;
-	
+
 	private bool isBlocked;
 
-
+	public int coolDown; 
+	
 	// Use this for initialization
 	void Start()
 	{
+		coolDown = 0;
+		steps = 0;
 		direction = "right";
 		canMove = true;
 		isMoving = false;
@@ -38,25 +42,42 @@ public class NewPlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		
 		//Debug.Log(Vector3.left);
 		if (canMove && !isMoving)
 		{
+			coolDown = 5;
 			towardsPos = transform.position;
 			towardsPosCheck = transform.position;
 			Move();
 		}
 
+		if (!isMoving)
+		{
+			coolDown--;
+			if (coolDown <= 0)
+			{
+				canMove = true;
+				coolDown = 5;
+			}
+		}
+		
 		if (isMoving)
 		{
 			//if the player has reached the next grid spot, they can move again
 			if (transform.position == towardsPos)
 			{
-				isMoving = false;
-				canMove = true;
+				isMoving = false;				
+
+//				if (isMoving) 
+//				{
+//					coolDown = 5;
+//				}
 				//Move();
 			}
 
 			transform.position = Vector3.MoveTowards(transform.position, towardsPos, Time.deltaTime * speed);
+			StepCounter();
 		}
 	}
 
@@ -154,5 +175,10 @@ public class NewPlayerController : MonoBehaviour
 		{
 			isBlocked = otherObj.GetComponent<Box>().isBlocked;
 		}
+	}
+	
+	private void StepCounter()
+	{
+		steps++;
 	}
 }

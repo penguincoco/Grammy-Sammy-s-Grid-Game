@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 //using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class FirstLevel : MonoBehaviour
 {
@@ -50,7 +52,12 @@ public class FirstLevel : MonoBehaviour
 	private bool goalTwoIn;
 	private bool goalThreeIn;
 
+	public String stepCounterText;
+	public GameObject stepCounterObj;
+
 	[HideInInspector] public int goalsInPlace;
+
+	public GameObject playerObj; 
 
 	// Use this for initialization
 	void Start()
@@ -64,6 +71,7 @@ public class FirstLevel : MonoBehaviour
 		col = 9;
 		numberOfGoalZones = 0;
 
+		
 		levelMap = new string[,]
 		{
 			{" ", " ", " ", " ", "#", "#", "#", "#", "#"},
@@ -99,7 +107,7 @@ public class FirstLevel : MonoBehaviour
 				}
 				else if (levelMap[i, j] == "0")
 				{
-					Instantiate(goal, new Vector3(i + 0.5f, j + 0.5f, 0), Quaternion.identity);
+					Instantiate(goal, new Vector3(i + 0.5f, j + 0.5f, 1), Quaternion.identity);
 				}
 			}
 		}
@@ -108,6 +116,11 @@ public class FirstLevel : MonoBehaviour
 		//Debug.Log(goalZones.Length);
 
 		timeToChange = 5f;
+		
+		playerObj = GameObject.FindGameObjectWithTag("Player");
+		stepCounterObj = GameObject.FindGameObjectWithTag("Movement Counter");
+		stepCounterText = "Step Count: " + playerObj.GetComponent<NewPlayerController>().steps;
+		Debug.Log(stepCounterText);
 	}
 
 	// Update is called once per frame
@@ -125,6 +138,9 @@ public class FirstLevel : MonoBehaviour
 			SceneManager.LoadScene("MainMenu");
 		}
 
+		//stepCounterObj.GetComponent<Text>().text = stepCounterText;
+		Debug.Log(stepCounterText);
+		
 		MapCompleted();
 	}
 
@@ -140,11 +156,8 @@ public class FirstLevel : MonoBehaviour
 			}
 		}
 	}
-
-	public void test()
-	{
-		Debug.Log("Accessing level script from box script!");
-	}
+	
+	
 }
 
 

@@ -17,5 +17,10 @@ public class GameOver : MonoBehaviour {
 			//Debug.Log("Restarting the level");
 			SceneManager.LoadScene("Level1");
 		}
+
+		if (Input.GetKey(KeyCode.Alpha2))
+		{
+			SceneManager.LoadScene("Level2");
+		}
 	}
 }
