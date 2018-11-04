@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 //using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -52,16 +53,23 @@ public class FirstLevel : MonoBehaviour
 	private bool goalTwoIn;
 	private bool goalThreeIn;
 
+	public GameObject playerObj;
 	public String stepCounterText;
 	public GameObject stepCounterObj;
+	public NewPlayerController playerScript; 
 
 	[HideInInspector] public int goalsInPlace;
 
-	public GameObject playerObj; 
+
+	public AudioSource backMusSrc;
+	public AudioClip backMusClip;
+
+	private bool allGoalsIn;
 
 	// Use this for initialization
 	void Start()
 	{
+		allGoalsIn = false; 
 		goalsInPlace = 0;
 		goalOneIn = false;
 		goalTwoIn = false;
@@ -71,15 +79,15 @@ public class FirstLevel : MonoBehaviour
 		col = 9;
 		numberOfGoalZones = 0;
 
-		
+
 		levelMap = new string[,]
 		{
 			{" ", " ", " ", " ", "#", "#", "#", "#", "#"},
 			{"#", "#", "#", "#", "#", " ", " ", "p", "#"},
-			{"#", " ", " ", "#", "#", "b", "b", " ", "#"},
-			{"#", " ", " ", " ", " ", " ", "b", " ", "#"},
+			{"#", " ", " ", "#", "#", " ", " ", " ", "#"},
+			{"#", " ", "b", " ", " ", " ", " ", " ", "#"},
 			{"#", " ", " ", " ", "#", "#", "#", "#", "#"},
-			{"#", "#", "#", " ", "#", " ", " ", " ", " "},
+			{"#", "#", "#", "b", "#", " ", " ", " ", " "},
 			{" ", "#", " ", " ", "#", "#", "#", " ", " "},
 			{" ", "#", " ", "0", "0", "0", "#", " ", " "},
 			{" ", "#", "#", "#", "#", "#", "#", " ", " "}
@@ -116,11 +124,17 @@ public class FirstLevel : MonoBehaviour
 		//Debug.Log(goalZones.Length);
 
 		timeToChange = 5f;
-		
+
 		playerObj = GameObject.FindGameObjectWithTag("Player");
+		playerScript = playerObj.GetComponent<NewPlayerController>();
 		stepCounterObj = GameObject.FindGameObjectWithTag("Movement Counter");
 		stepCounterText = "Step Count: " + playerObj.GetComponent<NewPlayerController>().steps;
 		Debug.Log(stepCounterText);
+
+		backMusSrc.clip = backMusClip;
+		//backMusSrc.playOnAwake = backMusClip;
+
+		boxes = GameObject.FindGameObjectsWithTag("Box");
 	}
 
 	// Update is called once per frame
@@ -139,25 +153,49 @@ public class FirstLevel : MonoBehaviour
 		}
 
 		//stepCounterObj.GetComponent<Text>().text = stepCounterText;
-		Debug.Log(stepCounterText);
-		
-		MapCompleted();
 	}
 
-	void MapCompleted()
+	void LateUpdate()
 	{
-		if (goalsInPlace == 6)
+		if (playerScript.canMove == true)
 		{
-			Debug.Log("All goals in place");
-			timeToChange -= Time.deltaTime;
-			if (timeToChange <= 0)
+			Debug.Log("The player can move again which means we should check to see if the map is complete");
+			if (MapCompleted() == true)
 			{
+				Debug.Log("All goals in place");
 				SceneManager.LoadScene("MainMenu");
 			}
 		}
 	}
-	
-	
+
+	bool MapCompleted()
+	{
+		for (int i = 0; i < goalZones.Length; i++)
+		{
+			if (goalZones[i].GetComponent<GoalZone>().getGoalStatus() == true)
+			{
+				allGoalsIn = true;
+			}
+			else
+			{
+				allGoalsIn = false; 
+			}
+
+			Debug.Log(i.ToString() + allGoalsIn);
+		}
+		
+		return allGoalsIn; 
+	}
+
+//		if (goalsInPlace == 6)
+//		{
+//			Debug.Log("All goals in place");
+//			timeToChange -= Time.deltaTime;
+//			if (timeToChange <= 0)
+//			{
+//				SceneManager.LoadScene("MainMenu");
+//			}
+//		}
 }
 
 

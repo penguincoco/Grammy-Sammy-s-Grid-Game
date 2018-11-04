@@ -19,6 +19,8 @@ public class Box : MonoBehaviour
 
     private GameObject[] walls;
     private GameObject[] boxes;
+
+    [HideInInspector]public bool boxInGoal;
 //    private GameObject[] goalZones;
 
 //    private GoalZone goalScript;
@@ -32,6 +34,7 @@ public class Box : MonoBehaviour
     
     void Start()
     {
+        boxInGoal = false;
         isBlocked = false;
         canBePushed = false;
         isBeingPushed = false;

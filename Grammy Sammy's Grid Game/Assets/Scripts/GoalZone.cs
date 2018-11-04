@@ -11,7 +11,6 @@ public class GoalZone : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		boxInGoal = false;
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 		levelScript = mainCamera.GetComponent<FirstLevel>();
 	}
@@ -22,22 +21,27 @@ public class GoalZone : MonoBehaviour
 //		Debug.Log(levelScript.goalsInPlace);
 	}
 
-
+	void OnTriggerExit2D(Collider2D otherObj)
+	{
+		//levelScript.goalsInPlace--;
+		boxInGoal = false; 
+	}
+	
 	void OnTriggerEnter2D(Collider2D otherObj)
 	{
 		if (otherObj.gameObject.CompareTag("Box"))
 		{
-			Debug.Log("Box has entered trigger zone!");
-			Debug.Log("There is a box in the goal!");
 			boxInGoal = true;
-			levelScript.goalsInPlace++;
-			Debug.Log(levelScript.goalsInPlace);
+			//Debug.Log(boxInGoal);
+//			levelScript.goalsInPlace++;
+//			Debug.Log(levelScript.goalsInPlace);
 		} 
 	}
 
-//	private void OnTriggerExit2D(Collider2D otherObj)
-//	{
-//		levelScript.goalsInPlace--;
-//		Debug.Log(levelScript.goalsInPlace);
-//	}
+	public bool getGoalStatus()
+	{
+		Debug.Log(boxInGoal);
+		return boxInGoal;
+	}
+	
 }

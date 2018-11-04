@@ -7,7 +7,7 @@ using UnityEngine;
 public class NewPlayerController : MonoBehaviour
 {
 	//player characteristics: their ability to move, if they are moving, speed, where they're trying to go, step count
-	public bool canMove;
+	[HideInInspector]public bool canMove;
 	public bool isMoving;
 	private int speed = 5;
 	private Vector3 towardsPos;
