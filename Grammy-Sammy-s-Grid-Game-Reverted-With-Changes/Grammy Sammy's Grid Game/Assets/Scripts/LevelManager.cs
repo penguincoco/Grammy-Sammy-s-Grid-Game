@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class FirstLevel : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
 
 	//This is what will display level 1
@@ -32,7 +32,10 @@ public class FirstLevel : MonoBehaviour
 	public int row;
 	public int col;
 
-	public string[,] levelMap; //rows first, then inner array is column
+	private Scene currentScene;
+	private string curSceneName;
+	public string[,] levelMap;
+	private string levelStr;
 
 	private GameObject[] goalZones;
 	private int numberOfGoalZones;
@@ -42,13 +45,14 @@ public class FirstLevel : MonoBehaviour
 	private float timeToChange;
 
 
-	[HideInInspector] public int goalsInPlace;
+	[HideInInspector]public int goalsInPlace;
 
 	public GameObject playerObj;
 
 	public bool allGoalsIn;
 
-	public Text counterText; 
+	public Text displayMoves;
+
 
 	// Use this for initialization
 	void Start()
@@ -56,25 +60,56 @@ public class FirstLevel : MonoBehaviour
 		allGoalsIn = false; 
 		goalsInPlace = 0;
 		timeToChange = 5f;
-		row = 9;
-		col = 9;
+		
 		numberOfGoalZones = 0;
 
-		
-		levelMap = new string[,]
+		currentScene = SceneManager.GetActiveScene();
+		curSceneName = currentScene.name;
+
+		if (curSceneName.Equals("Level1"))
 		{
-			{" ", " ", " ", " ", "#", "#", "#", "#", "#"},
-			{"#", "#", "#", "#", "#", " ", " ", "p", "#"},
-			{"#", " ", " ", "#", "#", "b", "b", " ", "#"},
-			{"#", " ", " ", " ", " ", " ", "b", " ", "#"},
-			{"#", " ", " ", " ", "#", "#", "#", "#", "#"},
-			{"#", "#", "#", " ", "#", " ", " ", " ", " "},
-			{" ", "#", " ", " ", "#", "#", "#", " ", " "},
-			{" ", "#", " ", "0", "0", "0", "#", " ", " "},
-			{" ", "#", "#", "#", "#", "#", "#", " ", " "}
-		};
+			levelMap = new string[,]
+			{
+				{" ", " ", " ", " ", "#", "#", "#", "#", "#"},
+				{"#", "#", "#", "#", "#", " ", "b", "p", "#"},
+				{"#", "b", " ", " ", " ", "b", " ", "b", "#"},
+				{"#", " ", " ", "b", " ", "b", " ", " ", "#"},
+				{"#", " ", "b", "b", "b", " ", "b", " ", "#"},
+				{"#", "#", " ", " ", " ", "b", "b", "#", "#"},
+				{" ", "#", " ", " ", "#", "#", "#", "#", "#"},
+				{" ", "#", " ", "b", " ", " ", " ", " ", "#"},
+				{" ", "#", "#", "#", "#", " ", "b", "0", "#"},
+				{" ", " ", " ", " ", "#", "#", " ", " ", "#"},
+				{" ", " ", " ", " ", " ", "#", "#", "#", "#"}
+			};
 
+			row = 11;
+			col = 9;
+		}
+		else if (curSceneName.Equals("Level2"))
+		{
+			levelMap = new string[,]
+			{
+				{" ", " ", " ", "#", "#", "#", "#", "#", "#"},
+				{" ", " ", " ", "#", "#", " ", " ", " ", "#"},
+				{" ", " ", " ", "#", " ", " ", "#", "0", "#"},
+				{"#", "#", "#", "#", "b", " ", " ", " ", "#"},
+				{"#", "b", "p", "#", " ", "b", "b", "b", "#"},
+				{"#", " ", "b", "#", "b", "#", "b", " ", "#"},
+				{"#", "b", " ", " ", " ", " ", " ", " ", "#"},
+				{"#", " ", "b", "#", " ", "#", "#", " ", "#"},
+				{"#", " ", " ", " ", " ", " ", " ", " ", "#"},
+				{"#", "#", "#", "#", "#", "#", " ", " ", "#"},
+				{" ", " ", " ", " ", " ", "#", "#", "#", "#"}			
+			};
+			
+			row = 11;
+			col = 9; 
+		}
 
+		Debug.Log(row);
+		Debug.Log(col);
+		
 		for (int i = 0; i < row; i++)
 		{
 			//Debug.Log("i = " + i);
@@ -119,6 +154,12 @@ public class FirstLevel : MonoBehaviour
 			//Debug.Log("Restarting the level");
 			SceneManager.LoadScene("Level1");
 		}
+		
+		if (Input.GetKey(KeyCode.Alpha2))
+		{
+			//Debug.Log("Restarting the level");
+			SceneManager.LoadScene("Level2");
+		}
 
 		if (Input.GetKey(KeyCode.Alpha0))
 		{
@@ -131,9 +172,8 @@ public class FirstLevel : MonoBehaviour
 //			SceneManager.LoadScene("GameOver");
 //		}
 		MapCompleted();
+		displayMoves.text = playerObj.GetComponent<NewPlayerController>().steps.ToString();
 
-		counterText.text = "Steps remaining: " + (100 - playerObj.GetComponent<NewPlayerController>().steps);
-		
 		if (playerObj.GetComponent<NewPlayerController>().steps >= 100)
 		{
 			SceneManager.LoadScene("GameOver");
@@ -142,8 +182,9 @@ public class FirstLevel : MonoBehaviour
 
 	void MapCompleted()
 	{
-		if (goalsInPlace == boxes.Length)
+		if (goalsInPlace == 1)
 		{
+			playerObj.GetComponent<NewPlayerController>().enabled = false;
 			Debug.Log(timeToChange);
 			Debug.Log("All goals in place");
 			timeToChange -= Time.deltaTime;

@@ -1,19 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GoalZone : MonoBehaviour
 {
 	[HideInInspector]public bool boxInGoal;
 	private GameObject mainCamera;
-	private SecondLevel levelScript;
+	private LevelManager levelScript;
 	
 	// Use this for initialization
 	void Start ()
 	{
 		boxInGoal = false;
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-		levelScript = mainCamera.GetComponent<SecondLevel>();
+		levelScript = mainCamera.GetComponent<LevelManager>();
 	}
 	
 	// Update is called once per frame
@@ -25,7 +26,7 @@ public class GoalZone : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D otherObj)
 	{
-		if (otherObj.gameObject.CompareTag("Box"))
+		if (otherObj.gameObject.CompareTag("Player"))
 		{
 			Debug.Log("Box has entered trigger zone!");
 			Debug.Log("There is a box in the goal!");
@@ -35,17 +36,17 @@ public class GoalZone : MonoBehaviour
 		} 
 	}
 
-	void OnTriggerExit2D(Collider2D otherObj)
-	{
-		if (otherObj.gameObject.CompareTag("Box"))
-		{
-			Debug.Log("Box has entered trigger zone!");
-			Debug.Log("There is a box in the goal!");
-			boxInGoal = true;
-			levelScript.goalsInPlace--;
-			Debug.Log(levelScript.goalsInPlace);
-		} 
-	}
+//	void OnTriggerExit2D(Collider2D otherObj)
+//	{
+//		if (otherObj.gameObject.CompareTag("Box"))
+//		{
+//			Debug.Log("Box has entered trigger zone!");
+//			Debug.Log("There is a box in the goal!");
+//			boxInGoal = true;
+//			levelScript.goalsInPlace--;
+//			Debug.Log(levelScript.goalsInPlace);
+//		} 
+//	}
 	
 //	void OnTriggerEnter2D(Collider2D otherObj)
 //	{

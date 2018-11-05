@@ -24,7 +24,9 @@ public class NewPlayerController : MonoBehaviour
 
 	private bool isBlocked;
 
-	public int coolDown; 
+	public int coolDown;
+
+	private SpriteRenderer mySpriteRenderer; 
 	
 	// Use this for initialization
 	void Start()
@@ -37,6 +39,8 @@ public class NewPlayerController : MonoBehaviour
 		speed = 5;
 		walls = GameObject.FindGameObjectsWithTag("Wall");
 		boxes = GameObject.FindGameObjectsWithTag("Box");
+
+		mySpriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
 	// Update is called once per frame
@@ -94,6 +98,7 @@ public class NewPlayerController : MonoBehaviour
 		}
 		else if (Input.GetKey(KeyCode.RightArrow) && !Blocked(towardsPosCheck += Vector3.right) && !BlockedForBox(towardsPosCheck, "right"))
 		{
+			mySpriteRenderer.flipX = false;
 			direction = "right";
 			canMove = false;
 			isMoving = true;
@@ -101,6 +106,7 @@ public class NewPlayerController : MonoBehaviour
 		}
 		else if (Input.GetKey(KeyCode.LeftArrow) && !Blocked(towardsPosCheck += Vector3.left) && !BlockedForBox(towardsPosCheck, "left"))
 		{
+			mySpriteRenderer.flipX = true;
 			direction = "left"; 
 			canMove = false;
 			isMoving = true;

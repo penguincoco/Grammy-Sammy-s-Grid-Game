@@ -1,19 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GoalZone : MonoBehaviour
 {
 	[HideInInspector]public bool boxInGoal;
 	private GameObject mainCamera;
-	private SecondLevel levelScript;
+	private LevelManager levelScript;
 	
 	// Use this for initialization
 	void Start ()
 	{
 		boxInGoal = false;
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-		levelScript = mainCamera.GetComponent<SecondLevel>();
+		levelScript = mainCamera.GetComponent<LevelManager>();
 	}
 	
 	// Update is called once per frame

@@ -1,0 +1,11 @@
+Name: Sammy Chuang 
+Grid Game/2018.11.05
+
+Description
+The great escape! Oh no! Soukoban Man is trapped by boxes now! Will he be able to push them all away so he can get to his escape point? 
+
+How to Play
+At any point in any level, press the corresponding level number to the number key on the keyboard to restart it (press 1 to restart/go to level 1; press 2 to restart/go to level 2). Or, press 0 to return to the menu. 
+
+Self-Evaluation 
+It’s functional but I understand that the code is quite messy and that it would have been easier to move the player around in a 2D array, but by the time I understood what that meant, I’d run out of time to be able to rework everything.
