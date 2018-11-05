@@ -33,7 +33,8 @@ public class FirstLevel : MonoBehaviour
 	public int row;
 	public int col;
 
-	public string[,] levelMap; //rows first, then inner array is column
+	public string[,] levelMap; //2D array of Strings for spawning the map
+	public GameObject[,] levelObjs; //2D array of GAMEOBJECTS for storing POSITIONS
 
 	private GameObject[] goalZones;
 	private int numberOfGoalZones;
@@ -66,6 +67,9 @@ public class FirstLevel : MonoBehaviour
 
 	private bool allGoalsIn;
 
+	private int playerX;
+	private int playerY;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -92,7 +96,8 @@ public class FirstLevel : MonoBehaviour
 			{" ", "#", " ", "0", "0", "0", "#", " ", " "},
 			{" ", "#", "#", "#", "#", "#", "#", " ", " "}
 		};
-
+		
+		levelObjs = new GameObject[9,9];
 
 		for (int i = 0; i < row; i++)
 		{
@@ -103,19 +108,36 @@ public class FirstLevel : MonoBehaviour
 				//Debug.Log(levelMap[i, j]);
 				if (levelMap[i, j] == "#")
 				{
-					Instantiate(wall, new Vector3(i + 0.5f, j + 0.5f, 0), Quaternion.identity);
+					GameObject thisWall =
+						Instantiate(wall, new Vector3(i + 0.5f, j + 0.5f, 0), Quaternion.identity) as GameObject;
+					Debug.Log(thisWall);
+					levelObjs[i, j] = thisWall;
 				}
 				else if (levelMap[i, j] == "b")
 				{
-					Instantiate(box, new Vector3(i + 0.5f, j + 0.5f, 0), Quaternion.identity);
+					GameObject thisBox =
+						Instantiate(box, new Vector3(i + 0.5f, j + 0.5f, 0), Quaternion.identity) as GameObject;
+					levelObjs[i, j] = thisBox;
 				}
 				else if (levelMap[i, j] == "p")
 				{
-					Instantiate(player, new Vector3(i + 0.5f, j + 0.5f, 0), Quaternion.identity);
+					GameObject thisPlayer =
+						Instantiate(player, new Vector3(i + 0.5f, j + 0.5f, 0), Quaternion.identity) as GameObject;
+					levelObjs[i, j] = thisPlayer;
+					playerX = i;
+					playerY = j;
 				}
 				else if (levelMap[i, j] == "0")
 				{
-					Instantiate(goal, new Vector3(i + 0.5f, j + 0.5f, 1), Quaternion.identity);
+					GameObject thisGoal =
+						Instantiate(goal, new Vector3(i + 0.5f, j + 0.5f, 0), Quaternion.identity) as GameObject;
+					levelObjs[i, j] = thisGoal;
+				}
+				else
+				{
+					GameObject thisBlank =
+						Instantiate(blankSpot, new Vector3(i + 0.5f, j + 0.5f, 0), Quaternion.identity) as GameObject;
+					levelObjs[i, j] = thisBlank;
 				}
 			}
 		}
@@ -125,11 +147,11 @@ public class FirstLevel : MonoBehaviour
 
 		timeToChange = 5f;
 
-		playerObj = GameObject.FindGameObjectWithTag("Player");
-		playerScript = playerObj.GetComponent<NewPlayerController>();
-		stepCounterObj = GameObject.FindGameObjectWithTag("Movement Counter");
-		stepCounterText = "Step Count: " + playerObj.GetComponent<NewPlayerController>().steps;
-		Debug.Log(stepCounterText);
+//		playerObj = GameObject.FindGameObjectWithTag("Player");
+//		playerScript = playerObj.GetComponent<NewPlayerController>();
+//		stepCounterObj = GameObject.FindGameObjectWithTag("Movement Counter");
+//		stepCounterText = "Step Count: " + playerObj.GetComponent<NewPlayerController>().steps;
+//		Debug.Log(stepCounterText);
 
 		backMusSrc.clip = backMusClip;
 		//backMusSrc.playOnAwake = backMusClip;
@@ -140,6 +162,15 @@ public class FirstLevel : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		if (Input.GetKey(KeyCode.DownArrow) && levelMap[playerX, playerY - 1] == " ")
+		{
+			levelObjs[playerX, playerY] = levelObjs[playerX, playerY - 1];
+			Debug.Log("moving the player down 1 unit");
+		}
+		else if (Input.GetKey(KeyCode.UpArrow) && levelMap[playerX, playerY + 1] == " ")
+		{
+			Debug.Log("moving the player up 1 unit");
+		}
 		if (Input.GetKey(KeyCode.Alpha1))
 		{
 			//Debug.Log("Restarting the level");
@@ -155,18 +186,18 @@ public class FirstLevel : MonoBehaviour
 		//stepCounterObj.GetComponent<Text>().text = stepCounterText;
 	}
 
-	void LateUpdate()
-	{
-		if (playerScript.canMove == true)
-		{
-			Debug.Log("The player can move again which means we should check to see if the map is complete");
-			if (MapCompleted() == true)
-			{
-				Debug.Log("All goals in place");
-				SceneManager.LoadScene("MainMenu");
-			}
-		}
-	}
+//	void LateUpdate()
+//	{
+//		if (playerScript.canMove == true)
+//		{
+//			Debug.Log("The player can move again which means we should check to see if the map is complete");
+//			if (MapCompleted() == true)
+//			{
+//				Debug.Log("All goals in place");
+//				SceneManager.LoadScene("MainMenu");
+//			}
+//		}
+//	}
 
 	bool MapCompleted()
 	{
@@ -186,7 +217,7 @@ public class FirstLevel : MonoBehaviour
 		
 		return allGoalsIn; 
 	}
-
+	
 //		if (goalsInPlace == 6)
 //		{
 //			Debug.Log("All goals in place");
